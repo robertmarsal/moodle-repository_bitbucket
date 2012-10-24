@@ -1,4 +1,5 @@
 <?php
+
 // This file is part of Moodle - http://moodle.org/
 //
 // Moodle is free software: you can redistribute it and/or modify
@@ -22,37 +23,34 @@
  * @copyright  2012 Robert Boloc <robertboloc@gmail.com>
  * @license    The MIT License (MIT)
  */
-
 require_once($CFG->dirroot . '/repository/lib.php');
+require_once($CFG->dirroot . '/repository/bitbucket/bitbucket.php');
 
 class repository_bitbucket extends repository {
-        
-    const APIROOT = 'https://api.bitbucket.org/1.0/';
-    
+
     public function check_login() {
         return false;
     }
-    
+
     public function print_login() {
         $login = array();
         $form = new stdClass();
         $form->type = 'text';
         $form->label = get_string('search', 'repository_bitbucket');
-        $form->name  = 'bitbucket_username';
-        
+        $form->name = 'bitbucket_username';
+
         $login['login'] = array($form);
-        
+
         return $login;
-        
     }
 
     public function get_listing() {
         $listing = array();
         $listing['dynload'] = true;
         $listing['nosearch'] = true;
-        
+
         $listing['list'] = array();
-        
+
         return $listing;
     }
 
