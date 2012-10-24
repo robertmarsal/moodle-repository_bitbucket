@@ -41,12 +41,12 @@ class bitbucket {
         $branches = $this->get($uri);
 
         $files = array();
-        $directories = array();
         
         foreach ($branches as $branch) {
             $uri = '/repositories/' . $this->username . '/' . $repo->slug . '/src/' . $branch->branch . '/';
             $node = $this->get($uri);
-
+             
+            // List all files from the / directory
             foreach ($node->files as $file) {
                 $files[] = array(
                     'title' => $file->path,
@@ -56,11 +56,38 @@ class bitbucket {
                     'type' => 'file',
                 );
             }
+            
+            $directories = $node->directories;
+            while($directories){
+                         
+                $newdirectories = array();
+                // List files under different directories
+                foreach($node->directories as $directory) {
+
+                    //add the directory to files
+                    
+                    $uri = '/repositories/' . $this->username . '/' . $repo->slug . '/src/' . $branch->branch . '/'.$directory.'/';
+                    $dirnode = $this->get($uri);
+
+                    foreach ($dirnode->files as $file) {
+                            $files[] = array(
+                                'title' => $file->path,
+                                'size' => $file->size,
+                                'date' => strtotime($file->timestamp),
+                                'path' => $repo->name . '/'.$directory.'/'. $file->path,
+                                'type' => 'file',
+                            );
+                        }
+                }
+                
+                $directories = $newdirectories;
+            }
+
         }
         
         return $files;
     }
-
+    
     private function get($uri) {
         $response = $this->client->get(self::APIBASE . $uri);
         if ($response) {
