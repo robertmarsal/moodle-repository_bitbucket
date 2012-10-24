@@ -12,10 +12,14 @@ class bitbucket {
         $this->client = new curl();
     }
 
+    /**
+     * Returns a list of repositories
+     * 
+     * @return array
+     */
     public function get_repositories() {
         $uri = '/users/' . $this->username;
-        $response = $this->client->get(self::APIBASE . $uri);
-        $repos = json_decode($response);
+        $repos = $this->get($uri);
 
         $files = array();
         if ($repos) {
@@ -28,7 +32,7 @@ class bitbucket {
                     'type' => 'folder',
                     'icon' => substr($repo->logo, 0, -6) . '32.png',
                     'thumbnail' => substr($repo->logo, 0, -6) . '128.png',
-                    'children' => $this->get_repo_files($repo),
+                    'children' => array(),
                 );
             }
         }
@@ -36,58 +40,67 @@ class bitbucket {
         return $files;
     }
 
-    private function get_repo_files($repo) {
-        $uri = '/repositories/' . $this->username . '/' . $repo->slug . '/branches';
+    /**
+     * Returns the list of branches of a repository
+     * 
+     * @param string $repo - repository
+     * @return array
+     */
+    public function get_branches($repo) {
+        $uri = '/repositories/' . $this->username . '/' . $repo . '/branches';
         $branches = $this->get($uri);
 
         $files = array();
-        
         foreach ($branches as $branch) {
-            $uri = '/repositories/' . $this->username . '/' . $repo->slug . '/src/' . $branch->branch . '/';
-            $node = $this->get($uri);
-             
-            // List all files from the / directory
-            foreach ($node->files as $file) {
-                $files[] = array(
-                    'title' => $file->path,
-                    'size' => $file->size,
-                    'date' => strtotime($file->timestamp),
-                    'path' => $repo->name . '/' . $file->path,
-                    'type' => 'file',
-                );
-            }
-            
-            $directories = $node->directories;
-            while($directories){
-                         
-                $newdirectories = array();
-                // List files under different directories
-                foreach($node->directories as $directory) {
-
-                    //add the directory to files
-                    
-                    $uri = '/repositories/' . $this->username . '/' . $repo->slug . '/src/' . $branch->branch . '/'.$directory.'/';
-                    $dirnode = $this->get($uri);
-
-                    foreach ($dirnode->files as $file) {
-                            $files[] = array(
-                                'title' => $file->path,
-                                'size' => $file->size,
-                                'date' => strtotime($file->timestamp),
-                                'path' => $repo->name . '/'.$directory.'/'. $file->path,
-                                'type' => 'file',
-                            );
-                        }
-                }
-                
-                $directories = $newdirectories;
-            }
-
+            $files[] = array(
+                'title' => $branch->branch,
+                'size' => $branch->size,
+                'author' => $branch->author,
+                'date' => strtotime($branch->timestamp),
+                'path' => $repo . '/' . $branch->branch,
+                'type' => 'folder',
+                'children' => array(),
+            );
         }
-        
+
         return $files;
     }
-    
+
+    public function get_path_listing($path) {
+        $fragments = explode('/', $path);
+        $repo = array_shift($fragments);
+        $branch = array_shift($fragments);
+
+        $path = implode('/', $fragments);
+
+        $uri = '/repositories/' . $this->username . '/' . $repo . '/src/' . $branch . '/' . $path;
+        $node = $this->get($uri);
+
+        // List all files
+        $files = array();
+        foreach ($node->files as $file) {
+            $files[] = array(
+                'title' => $file->path,
+                'size' => $file->size,
+                'date' => strtotime($file->timestamp),
+                'path' => $path . '/' . $file->path,
+                'type' => 'file',
+            );
+        }
+
+        // List all directories
+        foreach ($node->directories as $directory) {
+            $files[] = array(
+                'title' => $directory,
+                'path' => $path . '/' . $directory,
+                'type' => 'folder',
+                'children' => array(),
+            );
+        }
+
+        return $files;
+    }
+
     private function get($uri) {
         $response = $this->client->get(self::APIBASE . $uri);
         if ($response) {
