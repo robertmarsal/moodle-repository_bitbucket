@@ -71,9 +71,9 @@ class bitbucket {
         $repo = array_shift($fragments);
         $branch = array_shift($fragments);
 
-        $path = implode('/', $fragments);
+        $src = implode('/', $fragments);
 
-        $uri = '/repositories/' . $this->username . '/' . $repo . '/src/' . $branch . '/' . $path;
+        $uri = '/repositories/' . $this->username . '/' . $repo . '/src/' . $branch . '/' . $src;
         $node = $this->get($uri);
 
         // List all files
