@@ -66,6 +66,12 @@ class bitbucket {
         return $files;
     }
 
+    /**
+     * Returns a list of files and directories of a path
+     *
+     * @param string $path - path where to search for files
+     * @return array
+     */
     public function get_path_listing($path) {
         $fragments = explode('/', $path);
         $repo = array_shift($fragments);
@@ -84,6 +90,7 @@ class bitbucket {
                 'size' => $file->size,
                 'date' => strtotime($file->timestamp),
                 'path' => $path . '/' . $file->path,
+                'url' => 'https://bitbucket.org/api/1.0/repositories/tutorials/tutorials.bitbucket.org/raw/default/index.html',
                 'type' => 'file',
             );
         }
