@@ -62,7 +62,7 @@ class repository_bitbucket extends repository {
 
     public function get_listing($path = '', $page = '') {
         $listing = array();
-        $listing['dynload'] = true;
+        $listing['dynload'] = false;
         $listing['nosearch'] = true;
         
         $listing['list'] = $this->client->get_repositories();
