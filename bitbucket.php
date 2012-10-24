@@ -90,7 +90,6 @@ class bitbucket {
                 'size' => $file->size,
                 'date' => strtotime($file->timestamp),
                 'path' => $path . '/' . $file->path,
-                'url' => 'https://bitbucket.org/api/1.0/repositories/tutorials/tutorials.bitbucket.org/raw/default/index.html',
                 'type' => 'file',
             );
         }
