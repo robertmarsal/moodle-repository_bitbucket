@@ -1,10 +1,10 @@
 This is a **Bitbucket** repository plugin for **Moodle**
 
 #### Installation
-Download the source code  
-Extract the files and rename the folder to **bitbucket**  
-Copy the folder to **/repository/** on your moodle path  
-Go to **Notifications** and finish installation
+1. Download the source code  
+2. Extract the files and rename the folder to **bitbucket**  
+3. Copy the folder to **/repository/** on your moodle path  
+4. Go to **Notifications** and finish installation
 
 #### License
 The MIT License (MIT)  
