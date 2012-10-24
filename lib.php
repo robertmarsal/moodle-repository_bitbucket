@@ -28,7 +28,15 @@ require_once($CFG->dirroot . '/repository/bitbucket/bitbucket.php');
 
 class repository_bitbucket extends repository {
 
+    private $client;
+    
     public function check_login() {
+        $username = optional_param('bitbucket_username', '', PARAM_ALPHANUM);
+        if($username){
+            $this->client = new bitbucket($username);
+            return true;
+        }
+            
         return false;
     }
 
@@ -48,8 +56,8 @@ class repository_bitbucket extends repository {
         $listing = array();
         $listing['dynload'] = true;
         $listing['nosearch'] = true;
-
-        $listing['list'] = array();
+        
+        $listing['list'] = $this->client->get_repositories();
 
         return $listing;
     }
