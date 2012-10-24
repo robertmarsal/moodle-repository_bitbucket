@@ -26,6 +26,7 @@ class bitbucket {
                     'path' => $repo->name,
                     'type' => 'folder',
                     'icon' => substr($repo->logo, 0, -6) . '32.png',
+                    'thumbnail' => substr($repo->logo, 0, -6) . '128.png',
                 );
             }
         }
