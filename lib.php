@@ -72,14 +72,24 @@ class repository_bitbucket extends repository {
         $listing = array();
         $listing['dynload'] = true;
         $listing['nosearch'] = true;
-
+        $listing['path'] = array(
+            array('name'=> get_string('repositories', 'repository_bitbucket'),
+                  'path'=>''));
+        
         if (empty($path)) {
             $listing['list'] = $this->client->get_repositories();
         } else {
             $fragments = explode('/', $path);
             if (count($fragments) == 1) {
+                $listing['path'][] = array('name'=> $fragments[0], 'path'=> $fragments[0]);
                 $listing['list'] = $this->client->get_branches($fragments[0]);
             } else if (count($fragments) > 1) {
+                /*var_dump($path);
+                var_dump($fragments);*/
+                foreach($fragments as $fragment) {
+                    $listing['path'][] = array('name'=> $fragment, 'path'=> $fragment);
+                }
+                
                 $listing['list'] = $this->client->get_path_listing($path);
             }
         }
