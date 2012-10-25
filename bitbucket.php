@@ -126,7 +126,7 @@ class bitbucket {
             // List all files.
             foreach ($node->files as $file) {
                 $files[] = array(
-                    'title' => $file->path,
+                    'title' => str_replace($src.'/', '', $file->path),
                     'size' => $file->size,
                     'date' => strtotime($file->timestamp),
                     'path' => $path . '/' . $file->path,
