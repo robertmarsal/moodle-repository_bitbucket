@@ -27,10 +27,10 @@ require_once($CFG->dirroot . '/repository/lib.php');
 require_once($CFG->dirroot . '/repository/bitbucket/bitbucket.php');
 
 class repository_bitbucket extends repository {
-
     /**
      * Username preference identifier
      */
+
     const USERNAME = 'bitbucket_username';
 
     /**
@@ -40,6 +40,11 @@ class repository_bitbucket extends repository {
      */
     private $client;
 
+    /**
+     * Checks if username is set
+     * 
+     * @return boolean
+     */
     public function check_login() {
 
         $username = get_user_preferences(self::USERNAME, '');
@@ -56,6 +61,11 @@ class repository_bitbucket extends repository {
         return false;
     }
 
+    /**
+     * Prints the login form
+     * 
+     * @return \stdClass
+     */
     public function print_login() {
         $login = array();
         $form = new stdClass();
@@ -68,28 +78,33 @@ class repository_bitbucket extends repository {
         return $login;
     }
 
+    /**
+     * Builds the file tree, navigation, and options
+     * 
+     * @param string $path
+     * @param int $page
+     * @return array
+     */
     public function get_listing($path = '', $page = '') {
         $listing = array();
         $listing['dynload'] = true;
         $listing['nosearch'] = true;
         $listing['path'] = array(
-            array('name'=> get_string('repositories', 'repository_bitbucket'),
-                  'path'=>''));
-        
+            array('name' => get_string('repositories', 'repository_bitbucket'),
+                'path' => ''));
+
         if (empty($path)) {
             $listing['list'] = $this->client->get_repositories();
         } else {
             $fragments = explode('/', $path);
             if (count($fragments) == 1) {
-                $listing['path'][] = array('name'=> $fragments[0], 'path'=> $fragments[0]);
+                $listing['path'][] = array('name' => $fragments[0], 'path' => $fragments[0]);
                 $listing['list'] = $this->client->get_branches($fragments[0]);
             } else if (count($fragments) > 1) {
-                /*var_dump($path);
-                var_dump($fragments);*/
-                foreach($fragments as $fragment) {
-                    $listing['path'][] = array('name'=> $fragment, 'path'=> $fragment);
+                foreach ($fragments as $fragment) {
+                    $listing['path'][] = array('name' => $fragment, 'path' => $fragment);
                 }
-                
+
                 $listing['list'] = $this->client->get_path_listing($path);
             }
         }
@@ -97,6 +112,11 @@ class repository_bitbucket extends repository {
         return $listing;
     }
 
+    /**
+     * Unsets the username
+     * 
+     * @return boolean
+     */
     public function logout() {
         $this->username = '';
         unset_user_preference(self::USERNAME);

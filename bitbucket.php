@@ -24,7 +24,7 @@
  * @license    The MIT License (MIT)
  */
 class bitbucket {
-    
+
     /**
      * Base Bitbucket API url
      */
