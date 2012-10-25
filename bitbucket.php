@@ -1,10 +1,47 @@
 <?php
+// This file is part of Moodle - http://moodle.org/
+//
+// Moodle is free software: you can redistribute it and/or modify
+// it under the terms of the GNU General Public License as published by
+// the Free Software Foundation, either version 3 of the License, or
+// (at your option) any later version.
+//
+// Moodle is distributed in the hope that it will be useful,
+// but WITHOUT ANY WARRANTY; without even the implied warranty of
+// MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+// GNU General Public License for more details.
+//
+// You should have received a copy of the GNU General Public License
+// along with Moodle.  If not, see <http://www.gnu.org/licenses/>.
 
+/**
+ * Class for interacting with the Bitbucket API
+ * 
+ * @package    repository
+ * @subpackage bitbucket
+ * @copyright  2012 Robert Boloc
+ * @author     Robert Boloc <robertboloc@gmail.com>
+ * @license    The MIT License (MIT)
+ */
 class bitbucket {
+    /**
+     * Base Bitbucket API url
+     */
 
     const APIBASE = 'https://api.bitbucket.org/1.0';
 
+    /**
+     * Bitbucket username
+     * 
+     * @var string 
+     */
     private $username;
+
+    /**
+     * Curl instance
+     * 
+     * @var curl
+     */
     private $client;
 
     public function __construct($username) {
@@ -51,16 +88,18 @@ class bitbucket {
         $branches = $this->get($uri);
 
         $files = array();
-        foreach ($branches as $branch) {
-            $files[] = array(
-                'title' => $branch->branch,
-                'size' => $branch->size,
-                'author' => $branch->author,
-                'date' => strtotime($branch->timestamp),
-                'path' => $repo . '/' . $branch->branch,
-                'type' => 'folder',
-                'children' => array(),
-            );
+        if ($branches) {
+            foreach ($branches as $branch) {
+                $files[] = array(
+                    'title' => $branch->branch,
+                    'size' => $branch->size,
+                    'author' => $branch->author,
+                    'date' => strtotime($branch->timestamp),
+                    'path' => $repo . '/' . $branch->branch,
+                    'type' => 'folder',
+                    'children' => array(),
+                );
+            }
         }
 
         return $files;
@@ -82,31 +121,39 @@ class bitbucket {
         $uri = '/repositories/' . $this->username . '/' . $repo . '/src/' . $branch . '/' . $src;
         $node = $this->get($uri);
 
-        // List all files
         $files = array();
-        foreach ($node->files as $file) {
-            $files[] = array(
-                'title' => $file->path,
-                'size' => $file->size,
-                'date' => strtotime($file->timestamp),
-                'path' => $path . '/' . $file->path,
-                'type' => 'file',
-            );
-        }
+        if ($node) {
+            // List all files.
+            foreach ($node->files as $file) {
+                $files[] = array(
+                    'title' => $file->path,
+                    'size' => $file->size,
+                    'date' => strtotime($file->timestamp),
+                    'path' => $path . '/' . $file->path,
+                    'type' => 'file',
+                );
+            }
 
-        // List all directories
-        foreach ($node->directories as $directory) {
-            $files[] = array(
-                'title' => $directory,
-                'path' => $path . '/' . $directory,
-                'type' => 'folder',
-                'children' => array(),
-            );
+            // List all directories.
+            foreach ($node->directories as $directory) {
+                $files[] = array(
+                    'title' => $directory,
+                    'path' => $path . '/' . $directory,
+                    'type' => 'folder',
+                    'children' => array(),
+                );
+            }
         }
 
         return $files;
     }
 
+    /**
+     * Makes a GET petition using the curl instance
+     * 
+     * @param string $uri
+     * @return array
+     */
     private function get($uri) {
         $response = $this->client->get(self::APIBASE . $uri);
         if ($response) {

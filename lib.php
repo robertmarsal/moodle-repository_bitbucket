@@ -1,5 +1,4 @@
 <?php
-
 // This file is part of Moodle - http://moodle.org/
 //
 // Moodle is free software: you can redistribute it and/or modify
@@ -18,9 +17,10 @@
 /**
  * This plugin is used to access a bitbucket repository
  *
- * @since 2.0
- * @package    repository_bitbucket
- * @copyright  2012 Robert Boloc <robertboloc@gmail.com>
+ * @package    repository
+ * @subpackage bitbucket
+ * @copyright  2012 Robert Boloc
+ * @author     Robert Boloc <robertboloc@gmail.com>
  * @license    The MIT License (MIT)
  */
 require_once($CFG->dirroot . '/repository/lib.php');
@@ -28,14 +28,22 @@ require_once($CFG->dirroot . '/repository/bitbucket/bitbucket.php');
 
 class repository_bitbucket extends repository {
 
+    /**
+     * Username preference identifier
+     */
     const USERNAME = 'bitbucket_username';
-    
+
+    /**
+     * Bitbucket api client instance
+     * 
+     * @var bitbucket
+     */
     private $client;
 
     public function check_login() {
-        
+
         $username = get_user_preferences(self::USERNAME, '');
-        if(empty($username)){        
+        if (empty($username)) {
             $username = optional_param('bitbucket_username', '', PARAM_ALPHANUM);
         }
 
@@ -64,15 +72,14 @@ class repository_bitbucket extends repository {
         $listing = array();
         $listing['dynload'] = true;
         $listing['nosearch'] = true;
-        
-        if(empty($path)){
+
+        if (empty($path)) {
             $listing['list'] = $this->client->get_repositories();
         } else {
             $fragments = explode('/', $path);
-            if(count($fragments) == 1){
-                // list branches
+            if (count($fragments) == 1) {
                 $listing['list'] = $this->client->get_branches($fragments[0]);
-            } else if(count($fragments) > 1){
+            } else if (count($fragments) > 1) {
                 $listing['list'] = $this->client->get_path_listing($path);
             }
         }
@@ -85,4 +92,5 @@ class repository_bitbucket extends repository {
         unset_user_preference(self::USERNAME);
         return $this->print_login();
     }
+
 }

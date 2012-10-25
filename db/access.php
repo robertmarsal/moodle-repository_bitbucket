@@ -17,7 +17,8 @@
 /**
  * Plugin capabilities.
  *
- * @package    repository_bitbucket
+ * @package    repository
+ * @subpackage bitbucket
  * @copyright  2012 Robert Boloc
  * @author     Robert Boloc <robertboloc@gmail.com>
  * @license    The MIT License (MIT)
