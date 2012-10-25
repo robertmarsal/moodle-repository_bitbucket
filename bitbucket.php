@@ -24,10 +24,10 @@
  * @license    The MIT License (MIT)
  */
 class bitbucket {
+    
     /**
      * Base Bitbucket API url
      */
-
     const APIBASE = 'https://api.bitbucket.org/1.0';
 
     /**
@@ -125,11 +125,13 @@ class bitbucket {
         if ($node) {
             // List all files.
             foreach ($node->files as $file) {
+                $title = str_replace($src.'/', '', $file->path);
                 $files[] = array(
-                    'title' => str_replace($src.'/', '', $file->path),
+                    'title' => $title,
                     'size' => $file->size,
                     'date' => strtotime($file->timestamp),
                     'path' => $path . '/' . $file->path,
+                    'source' => self::APIBASE.'/repositories/'.$this->username.'/'.$repo.'/raw/'.$branch.'/'.$title,
                     'type' => 'file',
                 );
             }
