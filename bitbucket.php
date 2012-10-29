@@ -84,6 +84,9 @@ class bitbucket {
      * @return array
      */
     public function get_branches($repo) {
+        
+        global $OUTPUT;
+        
         $uri = '/repositories/' . $this->username . '/' . $repo . '/branches';
         $branches = $this->get($uri);
 
@@ -97,6 +100,7 @@ class bitbucket {
                     'date' => strtotime($branch->timestamp),
                     'path' => $repo . '/' . $branch->branch,
                     'type' => 'folder',
+                    'thumbnail' => $OUTPUT->pix_url(file_folder_icon(128))->out(false),
                     'children' => array(),
                 );
             }
@@ -112,6 +116,9 @@ class bitbucket {
      * @return array
      */
     public function get_path_listing($path) {
+        
+        global $OUTPUT;
+        
         $fragments = explode('/', $path);
         $repo = array_shift($fragments);
         $branch = array_shift($fragments);
@@ -126,6 +133,7 @@ class bitbucket {
             // List all files.
             foreach ($node->files as $file) {
                 $title = str_replace($src.'/', '', $file->path);
+                $pathinfo = pathinfo($file->path);
                 $files[] = array(
                     'title' => $title,
                     'size' => $file->size,
@@ -133,6 +141,7 @@ class bitbucket {
                     'path' => $path . '/' . $file->path,
                     'source' => self::APIBASE.'/repositories/'.$this->username.'/'.$repo.'/raw/'.$branch.'/'.$title,
                     'type' => 'file',
+                    'thumbnail' => $OUTPUT->pix_url(file_extension_icon('.'.$pathinfo['extension'], 128))->out(false),
                 );
             }
 
@@ -142,6 +151,7 @@ class bitbucket {
                     'title' => $directory,
                     'path' => $path . '/' . $directory,
                     'type' => 'folder',
+                    'thumbnail' => $OUTPUT->pix_url(file_folder_icon(128))->out(false),
                     'children' => array(),
                 );
             }
