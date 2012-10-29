@@ -21,7 +21,7 @@
  * @subpackage bitbucket
  * @copyright  2012 Robert Boloc
  * @author     Robert Boloc <robertboloc@gmail.com>
- * @license    The MIT License (MIT)
+ * @license    http://www.gnu.org/copyleft/gpl.html GNU GPL v3 or later
  */
 require_once($CFG->dirroot . '/repository/lib.php');
 require_once($CFG->dirroot . '/repository/bitbucket/bitbucket.php');
