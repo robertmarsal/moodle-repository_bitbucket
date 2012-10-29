@@ -17,4 +17,4 @@
 $string['pluginname'] = 'Bitbucket';
 $string['configplugin'] = 'Configura el repositorio Bitbucket';
 $string['search'] = 'Usuario de Bitbucket';
-$string['repositories'] = 'Repositorios';
+$string['repositories'] = 'repositorios';
