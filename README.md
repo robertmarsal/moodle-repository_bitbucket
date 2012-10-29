@@ -3,7 +3,9 @@ This is a **Bitbucket** repository plugin for **Moodle**
 #### Installation
 1. Download the source code  
 2. Extract the files and rename the folder to **bitbucket**  
-3. Copy the folder to **repository/** on your moodle path  
+3. Copy the folder to **repository/** on your moodle path 
+4. Go to **Site Administration** -> **Plugins** -> 
+**Repositories** -> **Manage Repositories** and enable the repository 
 4. Go to **Notifications** and finish installation
 
 #### License
