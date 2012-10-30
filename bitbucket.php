@@ -139,7 +139,7 @@ class bitbucket {
                     'size' => $file->size,
                     'date' => strtotime($file->timestamp),
                     'path' => $path . '/' . $file->path,
-                    'source' => self::APIBASE.'/repositories/'.$this->username.'/'.$repo.'/raw/'.$branch.'/'.$title,
+                    'source' => self::APIBASE.'/repositories/'.$this->username.'/'.$repo.'/raw/'.$branch.'/'.$file->path,
                     'type' => 'file',
                     'thumbnail' => $OUTPUT->pix_url(file_extension_icon('.'.$pathinfo['extension'], 128))->out(false),
                 );
