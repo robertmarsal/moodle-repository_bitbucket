@@ -84,9 +84,9 @@ class bitbucket {
      * @return array
      */
     public function get_branches($repo) {
-        
+
         global $OUTPUT;
-        
+
         $uri = '/repositories/' . $this->username . '/' . $repo . '/branches';
         $branches = $this->get($uri);
 
@@ -116,9 +116,9 @@ class bitbucket {
      * @return array
      */
     public function get_path_listing($path) {
-        
+
         global $OUTPUT;
-        
+
         $fragments = explode('/', $path);
         $repo = array_shift($fragments);
         $branch = array_shift($fragments);
