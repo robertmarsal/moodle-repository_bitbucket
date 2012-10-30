@@ -101,8 +101,10 @@ class repository_bitbucket extends repository {
                 $listing['path'][] = array('name' => $fragments[0], 'path' => $fragments[0]);
                 $listing['list'] = $this->client->get_branches($fragments[0]);
             } else if (count($fragments) > 1) {
+                $previous = '';
                 foreach ($fragments as $fragment) {
-                    $listing['path'][] = array('name' => $fragment, 'path' => $fragment);
+                    $listing['path'][] = array('name' => $fragment, 'path' => $previous.$fragment);
+                    $previous .= $fragment.'/';
                 }
 
                 $listing['list'] = $this->client->get_path_listing($path);
