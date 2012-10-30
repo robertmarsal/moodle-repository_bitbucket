@@ -68,7 +68,7 @@ class bitbucket {
                     'path' => $repo->name,
                     'type' => 'folder',
                     'icon' => substr($repo->logo, 0, -6) . '32.png',
-                    'thumbnail' => substr($repo->logo, 0, -6) . '128.png',
+                    'thumbnail' => substr($repo->logo, 0, -6) . '32.png',
                     'children' => array(),
                 );
             }
@@ -100,7 +100,7 @@ class bitbucket {
                     'date' => strtotime($branch->timestamp),
                     'path' => $repo . '/' . $branch->branch,
                     'type' => 'folder',
-                    'thumbnail' => $OUTPUT->pix_url(file_folder_icon(128))->out(false),
+                    'thumbnail' => $OUTPUT->pix_url('f/folder-32')->out(false),
                     'children' => array(),
                 );
             }
@@ -141,7 +141,7 @@ class bitbucket {
                     'path' => $path . '/' . $file->path,
                     'source' => self::APIBASE.'/repositories/'.$this->username.'/'.$repo.'/raw/'.$branch.'/'.$file->path,
                     'type' => 'file',
-                    'thumbnail' => $OUTPUT->pix_url(file_extension_icon('.'.$pathinfo['extension'], 128))->out(false),
+                    'thumbnail' => $OUTPUT->pix_url(file_extension_icon('.'.$pathinfo['extension'], 32))->out(false),
                 );
             }
 
@@ -151,7 +151,7 @@ class bitbucket {
                     'title' => $directory,
                     'path' => $path . '/' . $directory,
                     'type' => 'folder',
-                    'thumbnail' => $OUTPUT->pix_url(file_folder_icon(128))->out(false),
+                    'thumbnail' => $OUTPUT->pix_url('f/folder-32')->out(false),
                     'children' => array(),
                 );
             }
