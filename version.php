@@ -27,7 +27,7 @@
 defined('MOODLE_INTERNAL') || die();
 
 $plugin->version   = 2012102401;
-$plugin->requires  = 2012062502;
+$plugin->requires  = 2012120300;
 $plugin->maturity  = MATURITY_STABLE;
 $plugin->component = 'repository_bitbucket';
 $plugin->release   = '1.0';
