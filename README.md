@@ -2,7 +2,7 @@ This is a **Bitbucket** repository plugin for **Moodle**
 
 #### Installation
 1. Download the source code from the branch corresponding to 
-your moodle installation (use branch **2.3** for moodle 2.3.x, branch **2.2** for moodle 2.2.x, etc.)  
+your moodle version  
 2. Extract the files and rename the folder to **bitbucket**  
 3. Copy the folder to **repository/** on your moodle path 
 4. Go to **Site Administration** -> **Plugins** -> 
