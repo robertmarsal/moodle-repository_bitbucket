@@ -11,7 +11,7 @@ your moodle version
 
 #### License
 GNU GPL v3  
-Copyright (c) 2012 Robert Boloc
+Copyright (c) 2012 Robert Marsal
 
 This program is free software: you can redistribute it and/or modify
 it under the terms of the GNU General Public License as published by
